@@ -462,9 +462,11 @@
         </div>
         <div class="details-column">
             <div th:each="prod : ${product}" class="product-details">
-                <h5 th:text="${prod.prodName}">Product Name</h5>
+<!--                <h5 th:text="${prod.prodName}">Product Name</h5>-->
+                <p th:text="'Name:'+ ${prod.prodName}" style="font-size: 24px; color: green; font-weight: bold;"></p>
                 <p th:text="${prod.description}">Dscription</p>
-                <p th:text="${prod.price}">Rs.</p>
+<!--                ₹<p th:text="${prod.price}">Rs.</p>-->
+                <p th:text="'₹' + ${prod.price}" style="font-size: 24px; color: green; font-weight: bold;"></p>
                 <button type="button" onclick="showPopup()">Make an Enquiry</button>
             </div>
         </div>
