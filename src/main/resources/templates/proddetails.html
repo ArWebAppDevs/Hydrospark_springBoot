@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hydrospark</title>
+    <title>Hydrospark - Products</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -17,18 +17,27 @@
             --primary-color: #1a1a1a;
             --secondary-color: #ff6b00;
             --accent-color: #ffffff;
-            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+            --background-color: #f5f5f5;
+            --highlight-color: #00c4b4;
+            --error-color: #ff4f4f;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --text-muted: #666;
+            --header-height: 90px; /* Default height */
         }
 
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
-            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #333);
+            padding: 20px 40px;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            min-height: var(--header-height); /* Minimum height to ensure visibility */
+            display: flex;
+            align-items: center;
         }
 
         .header-container {
@@ -37,85 +46,79 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            width: 100%;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
         }
 
         .logo {
             color: var(--accent-color);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
         .logo img {
-            width: 60px;
+            width: 50px;
             height: 50px;
-            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
-            /* Removed border-radius: 50% to keep the logo in its original shape */
+            object-fit: contain;
+            margin-right: 10px;
         }
 
         .search-nav {
             display: flex;
             align-items: center;
-            gap: 15px;
-            width: auto;
-            position: relative;
+            gap: 20px;
         }
 
         .search-bar {
             position: relative;
-            width: 250px;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 8px 15px 8px 35px;
-            border: none;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--accent-color);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .sign-in-form .error-message {
-            color: red;
-            text-align: center;
-            margin: 10px 0;
-            font-size: 1rem;
-            width: 100%;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
         }
 
         .search-bar i {
             position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 15px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px 15px 10px 40px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+            font-size: 1rem;
+            width: 250px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-bar input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+            outline: none;
+        }
+
+        .search-bar input[type="text"]::placeholder {
             color: var(--accent-color);
             opacity: 0.7;
         }
 
         .hamburger {
-            font-size: 1.5rem;
-            color: var(--accent-color);
             background: none;
             border: none;
+            color: var(--accent-color);
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 8px;
             display: none;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
         }
 
         .nav-buttons {
@@ -146,163 +149,192 @@
             box-shadow: var(--shadow);
         }
 
-        /* Body Styles */
-        body {
-            background: #f5f5f5;
-            min-height: 200vh;
-            margin: 0;
-        }
-
-        /* Learn More Section Styles */
-        .learn-more {
-            padding: 50px 20px;
-            background-color: #f0f0f0;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .learn-more h2 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .learn-more p {
-            font-size: 1.1rem;
-            color: #555;
-            max-width: 800px;
-            margin: 0 auto;
+        /* Main Content */
+        .main-content {
+            padding-top: calc(var(--header-height) + 30px); /* Adjust based on header height */
+            padding-bottom: 40px;
+            padding-left: 40px;
+            padding-right: 40px;
+            background: var(--background-color);
+            min-height: 100vh;
         }
 
         /* Cards Section */
         .cards-section {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .card {
-            background: var(--accent-color);
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             padding: 15px;
+            text-align: center;
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            height: 300px;
-            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: linear-gradient(135deg, #fff, #f9f9f9);
             overflow: hidden;
-            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
         }
 
         .card img {
             width: 100%;
-            height: 180px;
+            height: 140px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
         }
 
         .card h5 {
             color: var(--primary-color);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 12px;
-        }
-
-        .card p {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 12px;
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .card .explore-btn {
-            align-self: center;
-            margin-top: auto;
+        .explore-btn {
+            display: inline-block;
             padding: 8px 20px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 20px;
-            background: transparent;
-            color: var(--primary-color);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            width: 80%;
-            text-align: center;
-        }
-
-        .card .explore-btn:hover {
-            background: var(--secondary-color);
+            background: linear-gradient(90deg, var(--secondary-color), #ff8c00);
             color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        /* Animation Keyframes */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .explore-btn:hover {
+            background: linear-gradient(90deg, #e65c00, #ff6b00);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            header {
+                padding: 15px 20px; /* Reduced padding for smaller screens */
+                min-height: auto; /* Allow height to adjust dynamically */
+            }
+
+            .header-container {
+                flex-direction: column;
+                padding: 0; /* Remove extra padding */
+                align-items: flex-start;
+            }
+
+            .search-nav {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .search-bar input[type="text"] {
+                width: 100%;
+                padding: 8px 15px 8px 40px; /* Slightly smaller padding */
+                font-size: 0.9rem; /* Smaller text */
+            }
+
+            .hamburger {
+                display: block;
+                margin-left: auto;
+            }
+
+            .nav-buttons {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+                margin-top: 10px;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 15px;
+                border-radius: 10px;
+                position: absolute;
+                top: 100%; /* Position directly below header */
+                left: 0;
+                right: 0;
+                z-index: 999;
+            }
+
+            .nav-buttons.active {
+                display: flex;
+            }
+
+            .nav-btn {
+                width: 100%;
+                padding: 8px 15px; /* Adjusted for smaller screens */
+                font-size: 0.9rem; /* Smaller text */
+            }
+
+            .main-content {
+                padding: 20px;
+                padding-top: 120px; /* Increased to account for header + dropdown */
+            }
+
             .cards-section {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
             }
 
             .card {
-                height: 250px;
+                padding: 12px;
+            }
+
+            .card img {
+                height: 120px;
+            }
+
+            .card h5 {
+                font-size: 1.1rem;
+            }
+
+            .explore-btn {
+                padding: 6px 16px;
+                font-size: 0.9rem;
             }
         }
 
-        @media (min-width: 769px) {
-            header {
-                padding: 20px 40px;
-            }
-
+        @media (max-width: 480px) {
             .cards-section {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
+                grid-template-columns: 1fr;
             }
 
-            .card {
-                padding: 20px;
-                height: 300px;
+            .main-content {
+                padding-top: 140px; /* Extra space for smaller screens */
             }
         }
     </style>
 </head>
 <body>
+<!-- Header -->
 <header>
     <div class="header-container">
         <div class="logo">
-            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
-            Hydrospark
+            <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" />
+            <a th:href="@{ / }" style="text-decoration: none; color: white;">
+                Hydrospark
+            </a>
         </div>
         <div class="search-nav">
             <form class="search-bar" action="/search" method="GET">
@@ -328,20 +360,18 @@
     </div>
 </header>
 
-
-<!-- Updated Cards Section with new product details structure -->
-<div class="cards-section">
-    <div th:each="prod : ${productDetails}" class="card">
-        <a th:href="@{${prod.suburl}}" class="text-decoration-none">
+<!-- Main Content -->
+<div class="main-content">
+    <div class="cards-section">
+        <div th:each="prod : ${productDetails}" class="card">
             <img th:src="'data:image/png;base64,' + ${prod.img}" alt="Product Image" />
             <h5 th:text="${prod.prodName}"></h5>
             <a th:href="@{${prod.suburl}}" class="explore-btn">Explore</a>
-        </a>
+        </div>
     </div>
 </div>
 
 <script>
-    // Toggle navigation menu
     function toggleMenu() {
         const navButtons = document.querySelector('.nav-buttons');
         navButtons.classList.toggle('active');

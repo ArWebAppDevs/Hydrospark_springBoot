@@ -26,7 +26,7 @@ public class Product {
     }
 
 
-    @OneToMany(mappedBy = "product",orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product",orphanRemoval = true)
     private List<SubProducts> subProducts;
 
     public Product(String productName, byte[] prodImg) {

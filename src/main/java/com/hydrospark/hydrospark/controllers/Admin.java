@@ -22,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ch.qos.logback.core.util.StringUtil.capitalizeFirstLetter;
 
@@ -84,10 +85,16 @@ public class Admin {
 
 
     @GetMapping("/addEmployee")
-    public String getAddEmployee(Model model){
+    public String getAddEmployee(Model model,HttpSession session){
+        List<String> validRoles=List.of("admin","manager");
+        if(session.getAttribute("employee")==null && validRoles.contains(session.getAttribute("role"))){
+            return "redirect:/admin";
+        }
         return "addEmployee.html";
     }
     public int findLastDigit(String email){
+        List<String> validRoles=List.of("admin","manager");
+
         List<Character> numbers=List.of('1','2','3','4','5','6','7','8','9','0');
         String curr="";
         email=email.split("@")[0];
@@ -102,7 +109,11 @@ public class Admin {
     }
 
     @PostMapping("/addEmployee")
-    public String postAddEmployee(HttpServletRequest request){
+    public String postAddEmployee(Model model,HttpServletRequest request,HttpSession session){
+        List<String> validRoles=List.of("admin","manager");
+        if(session.getAttribute("employee")==null && validRoles.contains(session.getAttribute("role"))){
+            return "redirect:/admin";
+        }
         String firstName=request.getParameter("firstName");
         String lastName=request.getParameter("lastName");
         String role=request.getParameter("employeeRoles");
@@ -118,6 +129,7 @@ public class Admin {
         String password=capitalizeFirstLetter(firstName)+lastName+"@"+mx;
         Employee employee =new Employee(firstName,lastName,password,email,role);
         employeeRepo.save(employee);
+        model.addAttribute("error","Employee added successfully with:- " +email+"  and password:- "+password);
         return "addEmployee.html";
     }
 
@@ -234,7 +246,8 @@ public class Admin {
             String empEmail=request.getParameter("Email");
             Employee employee=employeeRepo.findEmployeeByEmail(empEmail).get(0);
             employeeRepo.delete(employee);
-            return "redirect:/admin";
+            model.addAttribute("error","Employee with email "+empEmail+" removed successfully");
+            return "removeEmployee.html";
         }
         return "redirect:/admin/error";
     }
@@ -305,80 +318,300 @@ public class Admin {
         return "profile.html";
     }
 
-    @GetMapping("/products")
-    public String allproducts(Model model,HttpSession session){
-        String employee= (String) session.getAttribute("employee");
-        if(session.getAttribute("employee")==null){
+//    @GetMapping("/products")
+//    public String allproducts(Model model,HttpSession session){
+//        String employee= (String) session.getAttribute("employee");
+//        if(session.getAttribute("employee")==null){
+//            return "redirect:/admin";
+//        }
+//        List<Product> allProducts=productRepo.findAll();
+//        System.out.println("Prds"+allProducts);
+//        List<Map<String,String>> prods=new ArrayList<>();
+//        for(Product product:allProducts){
+//            Map<String,String> map=new HashMap<>();
+//            String prodname=product.getProductName();
+//            map.put("prodId",product.getProId()+"");
+//            map.put("prodName",prodname);
+//            map.put("removeproduct","/admin/removeproduct/"+product.getProId());
+//            map.put("editProduct","/admin/editproduct/"+product.getProId());
+//            prods.add(map);
+//        }
+//        List<SubProducts> allSubProducts=subProdRepo.findAll();
+//        System.out.println("subProds"+allSubProducts);
+//        List<Map<String,String>> subProds=new ArrayList<>();
+//        for(SubProducts subProd:allSubProducts){
+//            Map<String,String> map=new HashMap<>();
+//            String subprodname=subProd.getSubTypeName();
+//            map.put("subProdId",subProd.getSubProdId()+"");
+//            map.put("subprodName",subProd.getSubTypeName());
+//            map.put("removesubproduct","/admin/removesubproduct/"+subProd.getSubProdId());
+//            map.put("editsubproduct","/admin/editsubproduct/"+subProd.getSubProdId());
+//            prods.add(map);
+//        }
+//
+//        System.out.println(prods.size());
+////        for(Map<String,String> m:prods){
+////            for(String s:m.keySet()){
+////                System.out.println(m.get(s));
+////            }
+////        }
+//        model.addAttribute("products",prods);
+//        return "allproducts";
+//    }
+//
+
+
+//@GetMapping("/products")
+//public String allproducts(Model model, HttpSession session) {
+//    String employee = (String) session.getAttribute("employee");
+//    if (session.getAttribute("employee") == null) {
+//        return "redirect:/admin";
+//    }
+//
+//    // Fetch all products
+//    List<Product> allProducts = productRepo.findAll();
+//    System.out.println("Prds" + allProducts);
+//    List<Map<String, String>> prods = new ArrayList<>();
+//    for (Product product : allProducts) {
+//        Map<String, String> map = new HashMap<>();
+//        String prodname = product.getProductName();
+//        map.put("prodId", String.valueOf(product.getProId()));
+//        map.put("prodName", prodname);
+//        map.put("removeproduct", "/admin/removeproduct/" + product.getProId());
+//        map.put("editProduct", "/admin/editproduct/" + product.getProId());
+//        prods.add(map);
+//    }
+//
+//    // Fetch all sub-products
+//    List<SubProducts> allSubProducts = subProdRepo.findAll();
+//    System.out.println("subProds" + allSubProducts);
+//    List<Map<String, String>> subProds = new ArrayList<>();
+//    for (SubProducts subProd : allSubProducts) {
+//        Map<String, String> map = new HashMap<>();
+//        String subprodname = subProd.getSubTypeName();
+//        map.put("subProdId", String.valueOf(subProd.getSubProdId()));
+//        map.put("subprodName", subprodname);
+//        map.put("removesubproduct", "/admin/removesubproduct/" + subProd.getSubProdId());
+//        map.put("editsubproduct", "/admin/editsubproduct/" + subProd.getSubProdId());
+//        subProds.add(map);
+//    }
+//
+//    // Pass both lists to the template
+//    model.addAttribute("products", prods);
+//    model.addAttribute("subProducts", subProds);
+//
+//    return "allproducts";
+//}
+//
+//@GetMapping("/products")
+//public String allproducts(@RequestParam(value = "search", required = false) String search, Model model, HttpSession session) {
+//    String employee = (String) session.getAttribute("employee");
+//    if (employee == null) {
+//        return "redirect:/admin";
+//    }
+//
+//    // Fetch all products
+//    List<Product> allProducts = productRepo.findAll();
+//    if (search != null && !search.isEmpty()) {
+//        allProducts = allProducts.stream()
+//                .filter(p -> p.getProductName().toLowerCase().contains(search.toLowerCase()))
+//                .collect(Collectors.toList());
+//    }
+//
+//    List<Map<String, String>> prods = new ArrayList<>();
+//    for (Product product : allProducts) {
+//        Map<String, String> map = new HashMap<>();
+//        String prodname = product.getProductName();
+//        map.put("prodId", String.valueOf(product.getProId()));
+//        map.put("prodName", prodname);
+//        map.put("removeproduct", "/admin/removeproduct/" + product.getProId());
+//        map.put("editProduct", "/admin/editproduct/" + product.getProId());
+//        prods.add(map);
+//    }
+//
+//    // Fetch all sub-products
+//    List<SubProducts> allSubProducts = subProdRepo.findAll();
+//    if (search != null && !search.isEmpty()) {
+//        allSubProducts = allSubProducts.stream()
+//                .filter(sp -> sp.getSubTypeName().toLowerCase().contains(search.toLowerCase()))
+//                .collect(Collectors.toList());
+//    }
+//
+//    List<Map<String, String>> subProds = new ArrayList<>();
+//    for (SubProducts subProd : allSubProducts) {
+//        Map<String, String> map = new HashMap<>();
+//        String subprodname = subProd.getSubTypeName();
+//        map.put("subProdId", String.valueOf(subProd.getSubProdId()));
+//        map.put("subprodName", subprodname);
+//        map.put("removesubproduct", "/admin/removesubproduct/" + subProd.getSubProdId());
+//        map.put("editsubproduct", "/admin/editsubproduct/" + subProd.getSubProdId());
+//        subProds.add(map);
+//    }
+//
+//    // Pass both lists and the search parameter to the template
+//    model.addAttribute("products", prods);
+//    model.addAttribute("subProducts", subProds);
+//    model.addAttribute("search", search);
+//
+//    return "allproducts";
+//}
+@GetMapping("/products")
+public String allProducts(
+        @RequestParam(value = "search", required = false) String search,
+        @RequestParam(value = "subsearch", required = false) String subsearch,
+        Model model,
+        HttpSession session) {
+    String employee = (String) session.getAttribute("employee");
+    if (employee == null) {
+        return "redirect:/admin";
+    }
+
+    // Fetch all products
+    List<Product> allProducts = productRepo.findAll();
+    List<Map<String, String>> prods = new ArrayList<>();
+
+    // Filter products if search is provided
+    if (search != null && !search.isEmpty()) {
+        allProducts = allProducts.stream()
+                .filter(p -> p.getProductName().toLowerCase().contains(search.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    for (Product product : allProducts) {
+        Map<String, String> map = new HashMap<>();
+        String prodname = product.getProductName();
+        map.put("prodId", String.valueOf(product.getProId()));
+        map.put("prodName", prodname);
+        map.put("removeproduct", "/admin/removeproduct/" + product.getProId());
+        map.put("editProduct", "/admin/editproduct/" + product.getProId());
+        prods.add(map);
+    }
+
+    // Fetch all sub-products
+    List<SubProducts> allSubProducts = subProdRepo.findAll();
+    List<Map<String, String>> subProds = new ArrayList<>();
+
+    // Filter sub-products if subsearch is provided
+    if (subsearch != null && !subsearch.isEmpty()) {
+        allSubProducts = allSubProducts.stream()
+                .filter(sp -> sp.getSubTypeName().toLowerCase().contains(subsearch.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    for (SubProducts subProd : allSubProducts) {
+        Map<String, String> map = new HashMap<>();
+        String subprodname = subProd.getSubTypeName();
+        map.put("subProdId", String.valueOf(subProd.getSubProdId()));
+        map.put("subprodName", subprodname);
+        map.put("removesubproduct", "/admin/removesubproduct/" + subProd.getSubProdId());
+        map.put("editsubproduct", "/admin/editsubproduct/" + subProd.getSubProdId());
+        subProds.add(map);
+    }
+
+    // Add attributes to model
+    model.addAttribute("products", prods);
+    model.addAttribute("subProducts", subProds);
+    model.addAttribute("search", search);
+    model.addAttribute("subsearch", subsearch);
+
+    return "allproducts";
+}
+    @GetMapping("/products/{search}")
+    public String searchProducts(@PathVariable("search") String search, Model model, HttpSession session) {
+        String employee = (String) session.getAttribute("employee");
+        if (session.getAttribute("employee") == null) {
             return "redirect:/admin";
         }
-        List<Product> allProducts=productRepo.findAll();
-        System.out.println("Prds"+allProducts);
-        List<Map<String,String>> prods=new ArrayList<>();
-        for(Product product:allProducts){
-            Map<String,String> map=new HashMap<>();
-            String prodname=product.getProductName();
-            map.put("prodName",prodname);
-            map.put("removeproduct"+prodname,"/admin/removeproduct/"+product.getProId());
-            map.put("editProduct"+prodname,"/admin/editproduct/"+product.getProId());
-            prods.add(map);
-        }
-        List<SubProducts> allSubProducts=subProdRepo.findAll();
-        System.out.println("subProds"+allSubProducts);
-        List<Map<String,String>> subProds=new ArrayList<>();
-        for(SubProducts subProd:allSubProducts){
-            Map<String,String> map=new HashMap<>();
-            String subprodname=subProd.getSubTypeName();
-            map.put("subprodName",subProd.getSubTypeName());
-            map.put("removesubproduct"+subprodname,"/admin/removesubproduct/"+subProd.getSubProdId());
-            map.put("editsubproduct"+subprodname,"/admin/editsubproduct/"+subProd.getSubProdId());
+
+        List<Product> allProducts = productRepo.findAll();
+        List<Map<String, String>> prods = new ArrayList<>();
+        for (Product product : allProducts) {
+            Map<String, String> map = new HashMap<>();
+            String prodname = product.getProductName();
+
+            // Apply search filter for products
+            if (search != null && !search.equals("search") && !prodname.toLowerCase().contains(search.toLowerCase())) {
+                continue;
+            }
+
+            map.put("prodId", String.valueOf(product.getProId()));
+            map.put("prodName", prodname);
+            map.put("removeproduct", "/admin/removeproduct/" + product.getProId());
+            map.put("editProduct", "/admin/editproduct/" + product.getProId());
             prods.add(map);
         }
 
-        System.out.println(prods.size());
-//        for(Map<String,String> m:prods){
-//            for(String s:m.keySet()){
-//                System.out.println(m.get(s));
-//            }
-//        }
-        model.addAttribute("products",prods);
-        return "allproducts";
+        model.addAttribute("products", prods);
+        model.addAttribute("search", search);
+        return "allproducts"; // your view name
+    }
+
+    @GetMapping("/subproducts/{subsearch}")
+    public String searchSubProducts(@PathVariable("subsearch") String subsearch, Model model, HttpSession session) {
+        String employee = (String) session.getAttribute("employee");
+        if (session.getAttribute("employee") == null) {
+            return "redirect:/admin";
+        }
+
+        List<SubProducts> allSubProducts = subProdRepo.findAll();
+        List<Map<String, String>> subProds = new ArrayList<>();
+        for (SubProducts subProd : allSubProducts) {
+            Map<String, String> map = new HashMap<>();
+            String subprodname = subProd.getSubTypeName();
+
+            // Apply subsearch filter for sub-products
+            if (subsearch != null && !subsearch.equals("subsearch") && !subprodname.toLowerCase().contains(subsearch.toLowerCase())) {
+                continue;
+            }
+
+            map.put("subProdId", String.valueOf(subProd.getSubProdId()));
+            map.put("subprodName", subprodname);
+            map.put("removesubproduct", "/admin/removesubproduct/" + subProd.getSubProdId());
+            map.put("editsubproduct", "/admin/editsubproduct/" + subProd.getSubProdId());
+            subProds.add(map);
+        }
+
+        model.addAttribute("subProducts", subProds);
+        model.addAttribute("subsearch", subsearch);
+        return "allproducts"; // your view name
     }
 
 
 
-    @PostMapping("/removeproduct/{productName}")
+    @PostMapping("/removeproduct/{prodId}")
     @Transactional
-    public String removeProduct(@PathVariable String productName,HttpSession session){
+    public String removeProduct(@PathVariable int prodId,HttpSession session){
         String employee= (String) session.getAttribute("employee");
         if(session.getAttribute("employee")==null){
             return "redirect:/admin";
         }
-        productName = URLDecoder.decode(productName, StandardCharsets.UTF_8);
-        Product prod=productRepo.findByName(productName);
+//        productName = URLDecoder.decode(productName, StandardCharsets.UTF_8);
+        Product prod=productRepo.findById(prodId);
         productRepo.deleteById(prod.getProId());
         return "redirect:/admin/products";
     }
-    @PostMapping("/removesubproduct/{subProduct}")
+    @PostMapping("/removesubproduct/{subprodId}")
     @Transactional
-    public String removeSubProduct(@PathVariable String subProduct,HttpSession session){
+    public String removeSubProduct(@PathVariable int subprodId,HttpSession session){
         String employee= (String) session.getAttribute("employee");
         if(session.getAttribute("employee")==null){
             return "redirect:/admin";
         }
-        subProduct = URLDecoder.decode(subProduct, StandardCharsets.UTF_8);
-        SubProducts subProd=subProdRepo.findSubProductByName(subProduct).get(0);
+//        subProduct = URLDecoder.decode(subProduct, StandardCharsets.UTF_8);
+        SubProducts subProd=subProdRepo.findSubProductById(subprodId).get(0);
         subProdRepo.deleteById(subProd.getSubProdId());
         return "redirect:/admin/products";
     }
 
     @GetMapping("/editproduct/{prodId}")
     public String getEditProduct(@PathVariable int prodId,Model model,HttpSession session){
+        System.out.println(prodId);
         String employee= (String) session.getAttribute("employee");
-        if(session.getAttribute("employee")==null){
-            return "redirect:/admin";
-        }
-        model.addAttribute("redirect","admin/editproduct"+prodId);
-        return "editProduct.html";
+            if(session.getAttribute("employee")==null){
+                return "redirect:/admin";
+            }
+            model.addAttribute("redirect","/admin/editproduct/"+prodId);
+            return "editProduct.html";
     }
     @PostMapping("/editproduct/{prodId}")
     public String editProduct(@PathVariable int prodId,HttpServletRequest request,HttpSession session,Model model) throws ServletException, IOException {
@@ -389,17 +622,28 @@ public class Admin {
         System.out.println("Editing product");
 //        productName = URLDecoder.decode(productName, StandardCharsets.UTF_8);
         Product prod=productRepo.findById(prodId);
+
         String prodName=request.getParameter("ProductName");
 
         Part filePart = request.getPart("ProductImage");
+        long fileSizeInBytes = filePart.getSize();
+        long fileSizeInKB = fileSizeInBytes / 1024;
+        if (fileSizeInKB > 50) {
+            model.addAttribute("error","Pic size should be less than 50 KB");
+            System.out.println("size exceed");
+            return "addProducts.html";
+
+        }
         byte[] imageBytes = filePart.getInputStream().readAllBytes();
+        System.out.println("Size "+fileSizeInKB);
         if(prodName!=null){
             prod.setProductName(prodName);
         }
 
-        if(filePart!=null){
+        if(fileSizeInKB>0){
             prod.setProdImg(imageBytes);
         }
+
         productRepo.save(prod);
         model.addAttribute("error","Product edited sucessfully");
 //        productRepo.deleteById(prod.getProId());
@@ -413,25 +657,59 @@ public class Admin {
         if(session.getAttribute("employee")==null){
             return "redirect:/admin";
         }
-        model.addAttribute("redirect","admin/editsubproduct"+subprodId);
+        model.addAttribute("redirect","/admin/editsubproduct/"+subprodId);
 //        productRepo.deleteById(prod.getProId());
         return "editProduct.html";
     }
 
     @PostMapping("/editsubproduct/{subprodId}")
-    public String postEditSubProduct(@PathVariable int subprodId,HttpSession session,HttpServletRequest request) throws ServletException, IOException {
+    public String postEditSubProduct(@PathVariable int subprodId,HttpSession session,HttpServletRequest request,Model model) throws ServletException, IOException {
         String employee= (String) session.getAttribute("employee");
         if(session.getAttribute("employee")==null){
             return "redirect:/admin";
         }
+        SubProducts subProduct=subProdRepo.findSubProductById(subprodId).get(0);
         String prodName=request.getParameter("ProductName");
-        String subtype=request.getParameter("Category");
         String description=request.getParameter("Description");
-        double price= Double.parseDouble(request.getParameter("price"));
-
+        String price= request.getParameter("price");
         Part filePart = request.getPart("ProductImage");
-        byte[] imageBytes = filePart.getInputStream().readAllBytes();
-        Product getProd=productRepo.findByName(prodName);
+
+        System.out.println(prodName);
+        System.out.println(description);
+        System.out.println(price);
+        System.out.println(subprodId);
+        System.out.println(filePart);
+
+//        if(subProducts==null){
+//            model.addAttribute("error","No product Found")
+//            return "allproducts";
+//        }
+        long fileSizeInBytes = filePart.getSize();
+        long fileSizeInKB = fileSizeInBytes / 1024;
+        if (fileSizeInKB > 50) {
+            model.addAttribute("error","Pic size should be less than 50 KB");
+            System.out.println("size exceed");
+            return "addProducts.html";
+
+        }
+
+        if(prodName.length()>0){
+            subProduct.setSubTypeName(prodName);
+        }
+        if(description.length()>0){
+            subProduct.setDescription(description);
+        }
+        if(price.length()>0){
+            subProduct.setSubTypePrice(Double.parseDouble(price));
+        }
+
+
+        if(fileSizeInKB>0){
+            byte[] imageBytes = filePart.getInputStream().readAllBytes();
+            subProduct.setSubProdImg(imageBytes);
+        }
+        System.out.println("Edit Herererererererere");
+        subProdRepo.save(subProduct);
 //        productRepo.deleteById(prod.getProId());
         return "redirect:/admin/products";
     }

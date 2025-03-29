@@ -1,10 +1,12 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hydrospark - Register</title>
+    <title>Hydrospark - Sign Up</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -18,273 +20,569 @@
             --primary-color: #1a1a1a;
             --secondary-color: #ff6b00;
             --accent-color: #ffffff;
-            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+            --background-color: #f5f5f5;
+            --highlight-color: #00c4b4;
+            --error-color: #ff4f4f;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --text-muted: #666;
+            --header-height: 90px;
         }
 
-        /* Header Styles remain unchanged */
+        /* Header Styles */
         header {
-            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
-            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #333);
+            padding: 20px 40px;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            min-height: var(--header-height);
+            display: flex;
+            align-items: center;
         }
 
         .header-container {
             max-width: 1400px;
             margin: 0 auto;
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            flex-wrap: nowrap;
+            width: 100%;
+            flex-wrap: wrap;
         }
 
         .logo {
             color: var(--accent-color);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
         .logo img {
-            width: 60px;
+            width: 50px;
             height: 50px;
-            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
-            /* Removed border-radius: 50% to keep the logo in its original shape */
+            object-fit: contain;
+            margin-right: 10px;
         }
-        .home-button {
+
+        .search-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px 15px 10px 40px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+            font-size: 1rem;
+            width: 250px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-bar input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+            outline: none;
+        }
+
+        .search-bar input[type="text"]::placeholder {
+            color: var(--accent-color);
+            opacity: 0.7;
+        }
+
+        .hamburger {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 20px;
             background: transparent;
             color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: calc(var(--header-height) + 30px);
+            padding-bottom: 40px;
+            padding-left: 40px;
+            padding-right: 40px;
+            background: var(--background-color);
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Signup Form */
+        .signup-form {
+            max-width: 700px;
+            width: 100%;
+            background: var(--accent-color);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .signup-form h4 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two fields per row */
+            gap: 20px;
+            width: 100%; /* Ensure full width within form */
+        }
+
+        .form-row div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row label {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-row input {
+            padding: 10px;
+            border: 1px solid var(--text-muted);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--primary-color);
+            transition: border-color 0.3s ease;
+            width: 100%; /* Full width of parent */
+        }
+
+        .form-row input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 107, 0, 0.3);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 1rem;
+            text-align: center;
+            margin: 10px 0;
+            background: rgba(255, 75, 75, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .signup-form button {
+            padding: 12px 25px;
+            background: linear-gradient(90deg, var(--secondary-color), #ff8c00);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 25px;
             font-size: 1.1rem;
             font-weight: 600;
-            border: none;
             cursor: pointer;
-            text-decoration: none;
-            padding: 8px 15px;
             transition: all 0.3s ease;
-            border-radius: 25px;
-            margin-left: 15px;
+            align-self: center;
+            width: 200px;
         }
 
-        .home-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+        .signup-form button:hover {
+            background: linear-gradient(90deg, #e65c00, #ff6b00);
             transform: scale(1.05);
-        }
-        /* Error Message Styling */
-.sign-in-form .error-message {
-    color: red;
-    text-align: center;
-    margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
-    font-size: 1rem; /* Adjust font size */
-    width: 100%; /* Ensure the error message spans the width of the form */
-}
-
-        body {
-            min-height: 100vh;
-            padding-top: 100px;
-            background: #f5f5f5;
-            position: relative;
-            overflow-x: hidden;
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
         }
 
-        body::before {
-            content: '';
-            position: absolute;
+        .signup-form p {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .signup-form a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-form a:hover {
+            color: #e65c00;
+            text-decoration: underline;
+        }
+
+        .password-rules {
+            margin-top: 15px;
+        }
+
+        .password-rules p {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .password-rules ul {
+            list-style: disc;
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Popup Styles */
+        .overlay {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background:
-                radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
-                radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
-                linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
-                linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
-            background-size: 100px 100px, 150px 150px, 200px 200px;
-            opacity: 0.1;
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
         }
 
-        .form-container {
-            min-height: calc(100vh - 100px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--accent-color);
             padding: 20px;
-        }
-
-        .sign-in-form {
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .sign-in-form h4 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: var(--primary-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2001;
             text-align: center;
+            max-width: 400px;
+            width: 90%;
         }
 
-        .sign-in-form .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .sign-in-form label {
-            font-size: 1rem;
+        .popup p {
             color: var(--primary-color);
-            margin-bottom: 8px;
-            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
         }
 
-        .sign-in-form input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #ccc;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
+        .popup p[th\\:if="${session.error}"] {
+            color: var(--error-color);
         }
 
-        .sign-in-form input:focus {
-            border-color: var(--secondary-color);
-            outline: none;
-        }
-
-        .sign-in-form button {
-            padding: 12px 30px;
-            background: var(--secondary-color);
+        .popup button {
+            padding: 10px 25px;
+            background: linear-gradient(90deg, var(--secondary-color), #ff8c00);
             color: var(--accent-color);
             border: none;
             border-radius: 25px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
         }
 
-        .sign-in-form button:hover {
-            background: #e65c00;
+        .popup button:hover {
+            background: linear-gradient(90deg, #e65c00, #ff6b00);
             transform: scale(1.05);
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
         }
 
-        .sign-in-form p {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .sign-in-form ul {
-            font-size: 0.9rem;
-            color: #666;
-            margin-left: 20px;
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .sign-in-form h4 {
-                font-size: 1.8rem;
-            }
-
-            .sign-in-form input {
-                font-size: 0.9rem;
-            }
-
-            .sign-in-form button {
-                font-size: 1rem;
-            }
-
-            .form-group {
-                flex-direction: column;
-            }
-        }
-
-        @media (min-width: 769px) {
             header {
-                padding: 20px 40px;
+                padding: 15px 20px;
+                min-height: auto;
             }
 
             .header-container {
-                flex-wrap: nowrap;
+                flex-direction: column;
+                padding: 0;
+                align-items: flex-start;
+            }
+
+            .search-nav {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .search-bar input[type="text"] {
+                width: 100%;
+                padding: 8px 15px 8px 40px;
+                font-size: 0.9rem;
+            }
+
+            .hamburger {
+                display: block;
+                margin-left: auto;
+            }
+
+            .nav-buttons {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+                margin-top: 10px;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 15px;
+                border-radius: 10px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 999;
+            }
+
+            .nav-buttons.active {
+                display: flex;
+            }
+
+            .nav-btn {
+                width: 100%;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .main-content {
+                padding: 20px;
+                padding-top: 120px;
+            }
+
+            .signup-form {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .signup-form h4 {
+                font-size: 1.6rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr; /* Stack vertically on mobile */
+                gap: 15px;
+            }
+
+            .form-row input {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .signup-form button {
+                padding: 10px 20px;
+                font-size: 1rem;
+                width: 150px;
+            }
+
+            .signup-form p, .password-rules ul {
+                font-size: 0.9rem;
+            }
+
+            .password-rules p {
+                font-size: 1rem;
+            }
+
+            .error-message {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .popup {
+                width: 85%;
+                padding: 15px;
+            }
+
+            .popup p {
+                font-size: 1rem;
+            }
+
+            .popup button {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding-top: 140px;
+            }
+
+            .signup-form h4 {
+                font-size: 1.4rem;
+            }
+
+            .form-row label {
+                font-size: 0.9rem;
+            }
+
+            .signup-form button {
+                width: 120px;
+            }
+
+            .signup-form p, .password-rules ul {
+                font-size: 0.85rem;
+            }
+
+            .error-message {
+                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 <body>
+<!-- Header -->
 <header>
     <div class="header-container">
         <div class="logo">
-            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
-            Hydrospark
+            <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" />
+            <a th:href="@{ / }" style="text-decoration: none; color: white;">
+                Hydrospark
+            </a>
         </div>
-        <a th:href="@{/}" class="home-button">Home</a>
+        <div class="search-nav">
+            <form class="search-bar" action="/search" method="GET">
+                <i class="fas fa-search"></i>
+                <input type="text" name="query" placeholder="Search...">
+            </form>
+            <button class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-buttons" th:if="${session.employee != null}">
+                <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>
+                <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>
+            </div>
+            <div class="nav-buttons" th:if="${session.employee == null and session.user != null}">
+                <a class="nav-btn" th:href="@{/profile}">Profile</a>
+                <a class="nav-btn" th:href="@{/logout}">Logout</a>
+            </div>
+            <div class="nav-buttons" th:if="${session.employee == null and session.user == null}">
+                <a class="nav-btn" th:href="@{/signin}">Sign In</a>
+                <a class="nav-btn" th:href="@{/signup}">Sign Up</a>
+            </div>
+        </div>
     </div>
 </header>
 
-<div class="form-container">
-    <div class="sign-in-form">
-        <form method="post" th:action="@{/signup}">
-            <h4>Register</h4>
+<!-- Main Content -->
+<div class="main-content">
+    <form method="post" th:action="@{/signup}" class="signup-form">
+        <h4>Register</h4>
 
-
-            <div class="form-group">
-                <div>
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" required />
-                </div>
-                <div>
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" required />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <label for="number">Phone Number</label>
-                    <input type="tel" id="number" name="number" required />
-                </div>
-                <div>
-                    <label for="Email">Email address</label>
-                    <input type="email" id="Email" name="Email" required />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <label for="Password">Password</label>
-                    <input type="password" id="Password" name="Password" required />
-                </div>
-                <div>
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required />
-                </div>
-            </div>
-            <div th:if="${error}" style="color: red" class="error-message">
-                <p th:text="${error}"></p>
-            </div>
-            <button type="submit">Register</button>
-
-            <p>If already registered? <a href="/signin">Sign in</a></p>
-
+        <div class="form-row">
             <div>
-                <p><strong>Password Rules:</strong></p>
-                <ul>
-                    <li>At least 8 characters long</li>
-                    <li>Contains at least one number</li>
-                    <li>Includes at least both uppercase and lowercase letters</li>
-                    <li>Contains at least one special character</li>
-                </ul>
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required />
             </div>
-        </form>
+            <div>
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required />
+            </div>
+        </div>
 
+        <div class="form-row">
+            <div>
+                <label for="number">Phone Number</label>
+                <input type="tel" id="number" name="number" required />
+            </div>
+            <div>
+                <label for="Email">Email Address</label>
+                <input type="email" id="Email" name="Email" required />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label for="Password">Password</label>
+                <input type="password" id="Password" name="Password" required />
+            </div>
+            <div>
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required />
+            </div>
+        </div>
+
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+        <button type="submit">Register</button>
+
+        <p>If already registered? <a href="/signin">Sign in</a></p>
+
+        <div class="password-rules">
+            <p><strong>Password Rules:</strong></p>
+            <ul>
+                <li>At least 8 characters long</li>
+                <li>Contains at least one number</li>
+                <li>Includes at least both uppercase and lowercase letters</li>
+                <li>Contains at least one special character</li>
+            </ul>
+        </div>
+    </form>
+
+    <!-- Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <p th:if="${session.error}" th:text="${session.error}"></p>
+        <p th:unless="${session.error}">Registration successful!</p>
+        <button onclick="closePopup()">OK</button>
     </div>
 </div>
 
@@ -292,6 +590,20 @@
     function toggleMenu() {
         const navButtons = document.querySelector('.nav-buttons');
         navButtons.classList.toggle('active');
+    }
+
+    function showPopup() {
+        const overlay = document.getElementById('overlay');
+        const popup = document.getElementById('popup');
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+    }
+
+    function closePopup() {
+        const overlay = document.getElementById('overlay');
+        const popup = document.getElementById('popup');
+        overlay.style.display = 'none';
+        popup.style.display = 'none';
     }
 </script>
 </body>

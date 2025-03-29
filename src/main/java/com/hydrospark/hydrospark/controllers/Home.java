@@ -51,6 +51,7 @@ public class Home {
 //        password="Sachin@10";
 
         List<Product> products=productRepo.findAll();
+        System.out.println(products);
         List<Map<String,String>> base64Images = new ArrayList<>();
         for(Product prod:products){
             Blob blob = new SerialBlob(prod.getProdImg());
@@ -59,7 +60,7 @@ public class Home {
             Map<String,String> prodDetails=new HashMap<>();
             prodDetails.put("img",base64Image);
             prodDetails.put("prodName",prod.getProductName());
-            prodDetails.put("url","/product/productdetails/"+prod.getProductName());
+            prodDetails.put("url","/product/productdetails/"+prod.getProId());
             base64Images.add(prodDetails);
         }
         Hydrospark hyd=hydrosparkRepo.findByName("Hydro1...").get(0);
@@ -73,6 +74,84 @@ public class Home {
 
         return "home.html";
     }
+
+//@GetMapping("/")
+//public String home(Model model, HttpSession session) throws SQLException {
+//    List<Product> products = productRepo.findAll();
+//    List<Map<String, String>> base64Images = new ArrayList<>();
+//
+//    for (Product prod : products) {
+//        if (prod.getProdImg() != null) { // Check if the image blob is not null
+//            Blob blob = new SerialBlob(prod.getProdImg());
+//            byte[] bytes = blob.getBytes(1, (int) blob.length()); // Get bytes from blob, starting at position 1
+//            String base64Image = Base64.getEncoder().encodeToString(bytes);
+//
+//            Map<String, String> prodDetails = new HashMap<>();
+//            prodDetails.put("img", base64Image);
+//            prodDetails.put("prodName", prod.getProductName());
+//            prodDetails.put("url", "/product/productdetails/" + prod.getProductName());
+//            base64Images.add(prodDetails);
+//        }
+//    }
+//            Hydrospark hyd=hydrosparkRepo.findByName("Hydro1...").get(0);
+//            Blob blob = new SerialBlob(hyd.getImg());
+//            byte[] bytes = blob.getBytes(1, (int) blob.length());
+//            String base64Image = Base64.getEncoder().encodeToString(bytes);
+//            session.setAttribute("img", base64Image);
+//
+//    model.addAttribute("product", base64Images);
+//
+//    return "home.html";
+//}
+
+//@GetMapping("/")
+//public String home(Model model, HttpSession session) throws SQLException {
+//    List<Product> products = productRepo.findAll();
+//    List<Map<String, String>> base64Images = new ArrayList<>();
+//
+//    for (Product prod : products) {
+//        if (prod.getProdImg() != null) {
+//            try {
+//                Blob blob = new SerialBlob(prod.getProdImg());
+//                if (blob.length() > 0) {
+//                    byte[] bytes = blob.getBytes(1, (int) blob.length());
+//                    String base64Image = Base64.getEncoder().encodeToString(bytes);
+//
+//                    Map<String, String> prodDetails = new HashMap<>();
+//                    prodDetails.put("img", base64Image);
+//                    prodDetails.put("prodName", prod.getProductName());
+//                    prodDetails.put("url", "/product/productdetails/" + prod.getProductName());
+//                    base64Images.add(prodDetails);
+//                }
+//            } catch (SQLException e) {
+//                //Handle the exception, log it, or add a default image.
+//                System.err.println("Error processing product image: " + e.getMessage());
+//            }
+//
+//        }
+//    }
+//
+//    if(hydrosparkRepo.findByName("Hydro1...") != null && !hydrosparkRepo.findByName("Hydro1...").isEmpty()){
+//        Hydrospark hyd = hydrosparkRepo.findByName("Hydro1...").get(0);
+//        if(hyd.getImg() != null){
+//            try{
+//                Blob blob = new SerialBlob(hyd.getImg());
+//                if(blob.length() > 0){
+//                    byte[] bytes = blob.getBytes(1, (int) blob.length());
+//                    String base64Image = Base64.getEncoder().encodeToString(bytes);
+//                    session.setAttribute("img", base64Image);
+//                }
+//            }catch(SQLException e){
+//                System.err.println("Error processing hydrospark image: " + e.getMessage());
+//            }
+//        }
+//    }
+//
+//    model.addAttribute("product", base64Images);
+//
+//    return "home.html";
+//}
+
 
 
     @GetMapping("hydrospark")

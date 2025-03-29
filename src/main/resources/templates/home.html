@@ -17,18 +17,26 @@
             --primary-color: #1a1a1a;
             --secondary-color: #ff6b00;
             --accent-color: #ffffff;
-            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+            --background-color: #f5f5f5;
+            --highlight-color: #00c4b4;
+            --error-color: #ff4f4f;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --text-muted: #666;
+            --header-height: 90px;
         }
 
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
-            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #333);
+            padding: 20px 40px;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            min-height: var(--header-height);
+            display: flex;
+            align-items: center;
         }
 
         .header-container {
@@ -37,85 +45,81 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
             flex-wrap: wrap;
         }
 
         .logo {
             color: var(--accent-color);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .logo img {
-            width: 60px;
+            width: 50px;
             height: 50px;
-            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
-            /* Removed border-radius: 50% to keep the logo in its original shape */
+            object-fit: contain;
+            margin-right: 10px;
         }
 
         .search-nav {
             display: flex;
             align-items: center;
-            gap: 15px;
-            width: auto;
-            position: relative;
+            gap: 20px;
         }
 
         .search-bar {
             position: relative;
+            display: flex;
+            align-items: center;
             width: 250px;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 8px 15px 8px 35px;
-            border: none;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--accent-color);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .sign-in-form .error-message {
-            color: red;
-            text-align: center;
-            margin: 10px 0;
-            font-size: 1rem;
-            width: 100%;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
         }
 
         .search-bar i {
             position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 15px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .search-bar input {
+            padding: 10px 15px 10px 40px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+            font-size: 1rem;
+            width: 100%;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
             color: var(--accent-color);
             opacity: 0.7;
         }
 
         .hamburger {
-            font-size: 1.5rem;
-            color: var(--accent-color);
             background: none;
             border: none;
+            color: var(--accent-color);
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 8px;
             display: none;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
         }
 
         .nav-buttons {
@@ -148,47 +152,41 @@
 
         /* Body Styles */
         body {
-            background: #f5f5f5;
+            background: var(--background-color);
             min-height: 200vh;
             margin: 0;
         }
 
-        /* Hero Section Styles */
+        /* Hero Section */
         .hero {
             position: relative;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0;
+            padding: 60px 40px;
             text-align: center;
-            overflow: hidden;
             background-image: url('https://img.freepik.com/free-photo/two-worker-making-gates-smithy_7502-9153.jpg?t=st=1742722702~exp=1742726302~hmac=0a80a1f6c4949f5b22d0345a7362910380db49219c57508c79af10c6684df59a&w=1380');
             background-size: cover;
             background-position: center;
-            height: calc(100vh - 70px);
-            color: white;
+            height: calc(100vh - var(--header-height));
+            color: var(--accent-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-top: 70px;
+            margin-top: var(--header-height);
         }
 
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            line-height: 1.2;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-            animation: fadeInDown 1s ease-out;
         }
 
         .hero p {
             font-size: 1.2rem;
             max-width: 800px;
-            margin: 0 auto 25px;
-            font-weight: 400;
+            margin-bottom: 25px;
             color: #ddd;
-            animation: fadeInUp 1s ease-out 0.3s;
-            animation-fill-mode: both;
         }
 
         .cta-btn {
@@ -203,8 +201,7 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            animation: fadeInUp 1s ease-out 0.6s;
-            animation-fill-mode: both;
+            text-decoration: none;
         }
 
         .cta-btn:hover {
@@ -213,12 +210,11 @@
             box-shadow: var(--shadow);
         }
 
-        /* Learn More Section Styles */
+        /* Learn More Section */
         .learn-more {
             padding: 50px 20px;
             background-color: #f0f0f0;
             text-align: center;
-            margin-top: 20px;
         }
 
         .learn-more h2 {
@@ -229,7 +225,7 @@
 
         .learn-more p {
             font-size: 1.1rem;
-            color: #555;
+            color: var(--text-muted);
             max-width: 800px;
             margin: 0 auto;
         }
@@ -241,21 +237,24 @@
             padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            gap: 20px;
         }
 
         .card {
             background: var(--accent-color);
             border-radius: 12px;
-            padding: 15px;
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             height: 300px;
-            width: 100%;
             overflow: hidden;
-            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
         }
 
         .card img {
@@ -272,18 +271,7 @@
             margin-bottom: 12px;
         }
 
-        .card p {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 12px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .card .explore-btn {
-            align-self: center;
-            margin-top: auto;
             padding: 8px 20px;
             border: 2px solid var(--secondary-color);
             border-radius: 20px;
@@ -295,8 +283,9 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            width: 80%;
             text-align: center;
+            align-self: center;
+            margin-top: auto;
         }
 
         .card .explore-btn:hover {
@@ -306,31 +295,66 @@
             box-shadow: var(--shadow);
         }
 
-        /* Animation Keyframes */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                min-height: auto;
+            }
+
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-nav {
+                width: 100%;
+                margin-top: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .search-bar input {
+                width: 100%;
+                padding: 8px 15px 8px 40px;
+                font-size: 0.9rem;
+            }
+
+            .hamburger {
+                display: block;
+                margin-left: auto;
+            }
+
+            .nav-buttons {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+                margin-top: 10px;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 15px;
+                border-radius: 10px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 999;
+            }
+
+            .nav-buttons.active {
+                display: flex;
+            }
+
+            .nav-btn {
+                width: 100%;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
             .hero {
                 margin-top: 60px;
                 height: calc(100vh - 60px);
@@ -345,34 +369,82 @@
                 font-size: 1rem;
             }
 
+            .cta-btn {
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+
+            .learn-more {
+                padding: 30px 15px;
+            }
+
+            .learn-more h2 {
+                font-size: 1.6rem;
+            }
+
+            .learn-more p {
+                font-size: 1rem;
+            }
+
             .cards-section {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+                padding: 0 15px;
             }
 
             .card {
                 height: 250px;
+                padding: 15px;
+            }
+
+            .card img {
+                height: 150px;
+            }
+
+            .card h5 {
+                font-size: 1.2rem;
+            }
+
+            .card .explore-btn {
+                padding: 6px 15px;
+                font-size: 0.9rem;
             }
         }
 
-        @media (min-width: 769px) {
-            header {
-                padding: 20px 40px;
-            }
-
+        @media (max-width: 480px) {
             .hero {
-                margin-top: 80px;
-                height: calc(100vh - 80px);
-                padding: 60px 40px;
+                margin-top: 70px;
+                height: calc(100vh - 70px);
             }
 
-            .cards-section {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
+            .hero h1 {
+                font-size: 1.8rem;
             }
 
-            .card {
-                padding: 20px;
-                height: 300px;
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .cta-btn {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
+
+            .learn-more h2 {
+                font-size: 1.4rem;
+            }
+
+            .learn-more p {
+                font-size: 0.9rem;
+            }
+
+            .card h5 {
+                font-size: 1.1rem;
+            }
+
+            .card .explore-btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -380,16 +452,12 @@
 <body>
 <header>
     <div class="header-container">
-<!--        <div class="logo">-->
-<!--            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />-->
-<!--            Hydrospark-->
-<!--        </div>-->
         <div class="logo">
             <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" />
-
-            Hydrospark
+            <a th:href="@{ / }" style="text-decoration: none; color: white;">
+                Hydrospark
+            </a>
         </div>
-
         <div class="search-nav">
             <form class="search-bar" action="/search" method="GET">
                 <i class="fas fa-search"></i>
@@ -399,6 +467,7 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="nav-buttons" th:if="${session.employee != null}">
+                <a class="nav-btn" th:href="@{/admin}">Admin</a>
                 <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>
                 <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>
             </div>
@@ -432,7 +501,7 @@
 <!-- Cards Section -->
 <div class="cards-section">
     <div th:each="prod: ${product}" class="card">
-        <img th:src="'data:prod.img/png;base64,' + ${prod.img}" alt="Image" />
+        <img th:src="'data:image/png;base64,' + ${prod.img}" alt="Image" />
         <h5 th:text="${prod.prodName}"></h5>
         <a th:href="${prod.url}" class="explore-btn">Explore</a>
     </div>
@@ -455,3 +524,4 @@
 </script>
 </body>
 </html>
+

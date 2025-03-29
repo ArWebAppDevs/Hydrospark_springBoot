@@ -54,16 +54,16 @@ public class Products {
         String base64Image = Base64.getEncoder().encodeToString(bytes);
         session.setAttribute("img", base64Image);
     }
-    @GetMapping("productdetails/{prodName}")
-    public String getProducts(@PathVariable String prodName, Model model, HttpSession session) throws SQLException {
+    @GetMapping("productdetails/{prodId}")
+    public String getProducts(@PathVariable int prodId, Model model, HttpSession session) throws SQLException {
 //        if(session.getAttribute("user")==null){
 //            String redirectURL="product/productdetails/"+prodName;
 //            session.setAttribute("redirectURL",redirectURL);
 //
 //            return "redirect:/signin";
 //        }
+
         String user= (String) session.getAttribute("user");
-        prodName = URLDecoder.decode(prodName, StandardCharsets.UTF_8);
         if(user!=null){
             Date currentDate = new Date();
             User userUp=userRepo.findByEmail(user).get(0);
@@ -76,7 +76,7 @@ public class Products {
         List<SubProducts> subProducts=subProdRepo.getAll();
         List<SubProducts> listOfSameMainProd=new ArrayList<>();
         for(SubProducts subprod:subProducts){
-            if(subprod.getProduct().getProductName().equals(prodName)){
+            if(subprod.getProduct().getProId()==prodId){
                 listOfSameMainProd.add(subprod);
             }
         }
@@ -92,7 +92,7 @@ public class Products {
             Map<String, String> prodDetails = new HashMap<>();
             prodDetails.put("img", base64Image);
             prodDetails.put("prodName", subProduct.getSubTypeName());
-            prodDetails.put("suburl", "/product/productdescription/" + subProduct.getSubTypeName());
+            prodDetails.put("suburl", "/product/productdescription/" + subProduct.getSubProdId());
 
             base64Images.add(prodDetails);
         }
@@ -101,12 +101,12 @@ public class Products {
         return "proddetails";  // Thymeleaf template to render
     }
 
-    @GetMapping("productdescription/{subtype}")
-    public String getSubType(@PathVariable String subtype,Model model,HttpSession session) throws SQLException {
+    @GetMapping("productdescription/{subId}")
+    public String getSubType(@PathVariable int subId,Model model,HttpSession session) throws SQLException {
         session.removeAttribute("error");
-        subtype = URLDecoder.decode(subtype, StandardCharsets.UTF_8);
+//        subtype = URLDecoder.decode(subtype, StandardCharsets.UTF_8);
         if(session.getAttribute("user")==null && session.getAttribute("employee")==null){
-            String redirectURL="product/productdescription/"+subtype;
+            String redirectURL="product/productdescription/"+subId;
             session.setAttribute("redirectURL",redirectURL);
             return "redirect:/signin";
         }
@@ -120,8 +120,8 @@ public class Products {
             userRepo.save(userUp);
         }
 
-        session.setAttribute("subProductName",subtype);
-        List<SubProducts> subProducts=subProdRepo.findSubProductByName(subtype);
+        session.setAttribute("subProductName",subId);
+        List<SubProducts> subProducts=subProdRepo.findSubProductById(subId);
         List<Map<String,String>> base64Images = new ArrayList<>();
         System.out.println(subProducts);
         for(SubProducts subProd:subProducts){
@@ -138,6 +138,7 @@ public class Products {
             prodDetails.put("img",base64Image);
             prodDetails.put("prodName",subProd.getSubTypeName());
             prodDetails.put("description",subProd.getDescription());
+            prodDetails.put("price",subProd.getSubTypePrice()+"");
             prodDetails.put("enquiry","/product/enquiry/"+subProd.getSubTypeName());
 
 //            prodDetails.put("url","/admin/productdetails/"+subProd.getSubTypeName());
@@ -201,7 +202,7 @@ public class Products {
         if (base64Images.size()==0){
             System.out.println("Noooooooooooooooo");
             model.addAttribute("error","No Product found with name");
-            return "redirect:/admin/error/";
+            return "redirect:/";
         }
         return "searchProduct.html";
     }

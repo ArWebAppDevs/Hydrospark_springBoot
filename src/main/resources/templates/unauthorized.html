@@ -1,157 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
-
-<!--<head>-->
-<!--  <meta charset="UTF-8">-->
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--  <title>HydroSpark - No Authorization</title>-->
-<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">-->
-
-<!--  <style>-->
-<!--    body {-->
-<!--        background-color: #f3e6e6;-->
-<!--        margin: 0;-->
-<!--        padding: 0;-->
-<!--    }-->
-
-<!--    .hero {-->
-<!--        position: relative;-->
-<!--        width: 100%;-->
-<!--        height: 100vh;-->
-<!--        background-position: center;-->
-<!--        background-repeat: no-repeat;-->
-<!--        background-size: cover;-->
-<!--        display: flex;-->
-<!--        align-items: center;-->
-<!--        justify-content: center;-->
-<!--        color: white;-->
-<!--    }-->
-
-<!--    .hero-overlay {-->
-<!--        background: rgba(0, 0, 0, 0.6);-->
-<!--        width: 100%;-->
-<!--        height: 100%;-->
-<!--        display: flex;-->
-<!--        flex-direction: column;-->
-<!--        align-items: center;-->
-<!--        justify-content: center;-->
-<!--        padding: 20px;-->
-<!--        text-align: center;-->
-<!--    }-->
-
-<!--    .hero-title {-->
-<!--        font-size: 3rem;-->
-<!--        font-weight: bold;-->
-<!--        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);-->
-<!--    }-->
-
-<!--    .hero-subtitle {-->
-<!--        font-size: 1.5rem;-->
-<!--        margin-bottom: 20px;-->
-<!--    }-->
-
-<!--    .hero .btn {-->
-<!--        font-size: 1.2rem;-->
-<!--        padding: 12px 30px;-->
-<!--        font-weight: bold;-->
-<!--        transition: all 0.3s ease-in-out;-->
-<!--    }-->
-
-<!--    .hero .btn:hover {-->
-<!--        background-color: #ff9200;-->
-<!--        transform: scale(1.05);-->
-<!--    }-->
-
-<!--    .form-container {-->
-<!--        background-color: rgba(255, 255, 255, 0.8);-->
-<!--        padding: 20px;-->
-<!--        border-radius: 8px;-->
-<!--        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
-<!--        width: 100%;-->
-<!--        max-width: 400px;-->
-<!--        display: flex;-->
-<!--        flex-direction: column;-->
-<!--        justify-content: center;-->
-<!--        align-items: center;-->
-<!--    }-->
-
-<!--    .form-container .form-group {-->
-<!--        width: 100%;-->
-<!--        margin-bottom: 15px;-->
-<!--    }-->
-
-<!--    .form-container .btn {-->
-<!--        width: 100%;-->
-<!--        padding: 12px;-->
-<!--        font-weight: bold;-->
-<!--        background-color: #007bff;-->
-<!--        color: white;-->
-<!--        border: none;-->
-<!--        border-radius: 4px;-->
-<!--        transition: background-color 0.3s ease;-->
-<!--    }-->
-
-<!--    .form-container .btn:hover {-->
-<!--        background-color: #0056b3;-->
-<!--    }-->
-
-<!--    /* Error message styling */-->
-<!--    .error-message {-->
-<!--        color: red;-->
-<!--        font-size: 1.25rem;-->
-<!--        font-weight: bold;-->
-<!--        margin-bottom: 20px;-->
-<!--    }-->
-
-<!--    .error-message i {-->
-<!--        margin-right: 10px;-->
-<!--    }-->
-<!--  </style>-->
-<!--</head>-->
-
-<!--<body>-->
-<!--&lt;!&ndash; Hero Section &ndash;&gt;-->
-<!--<section class="hero">-->
-<!--  <div class="hero-overlay">-->
-<!--    &lt;!&ndash; Show error message if available &ndash;&gt;-->
-<!--    <div th:if="${error != null}" class="error-message">-->
-<!--      <i class="bi bi-exclamation-circle-fill"></i> &lt;!&ndash; Error icon &ndash;&gt;-->
-<!--      <span th:text="${error}">Error message goes here.</span>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Show default error message if no specific error &ndash;&gt;-->
-<!--    <div th:if="${error == null}" class="error-message">-->
-<!--      <i class="bi bi-exclamation-circle-fill"></i> &lt;!&ndash; Error icon &ndash;&gt;-->
-<!--      Something went wrong. Please try again.-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Normal Access Denied Content &ndash;&gt;-->
-<!--    <div class="form-container">-->
-<!--      <h4 class="text-center text-dark">Access Denied</h4>-->
-<!--      <p class="hero-subtitle text-light">You do not have the required permissions to view this page.</p>-->
-
-<!--      <div class="form-group">-->
-<!--        <button class="btn btn-primary" th:href="@{/}">-->
-<!--          Return to Home-->
-<!--        </button>-->
-<!--      </div>-->
-
-<!--&lt;!&ndash;      <p style="color: grey;">&ndash;&gt;-->
-<!--&lt;!&ndash;        Not logged in? <button th:href="@{/}" style="font-size: 16px; padding: 5px 10px; border: none; background: none; color: blue; text-decoration: underline; cursor: pointer;">&ndash;&gt;-->
-<!--&lt;!&ndash;        Sign In&ndash;&gt;-->
-<!--&lt;!&ndash;      </button>&ndash;&gt;-->
-<!--&lt;!&ndash;      </p>&ndash;&gt;-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</section>-->
-
-<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>-->
-<!--</body>-->
-
-<!--</html>-->
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -159,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hydrospark - Access Denied</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Bootstrap Icons for bi-exclamation-circle-fill -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
     * {
         margin: 0;
@@ -171,221 +19,483 @@
         --primary-color: #1a1a1a;
         --secondary-color: #ff6b00;
         --accent-color: #ffffff;
-        --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        --background-color: #f5f5f5;
+        --highlight-color: #00c4b4;
+        --error-color: #ff4f4f;
+        --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        --text-muted: #666;
+        --header-height: 90px;
     }
 
-    /* Header Styles remain unchanged */
+    /* Header Styles */
     header {
-        background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
-        padding: 15px 20px;
+        background: linear-gradient(135deg, var(--primary-color), #333);
+        padding: 20px 40px;
         position: fixed;
         width: 100%;
         top: 0;
         z-index: 1000;
-        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        min-height: var(--header-height);
+        display: flex;
+        align-items: center;
     }
 
     .header-container {
         max-width: 1400px;
         margin: 0 auto;
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        flex-wrap: nowrap;
+        width: 100%;
+        flex-wrap: wrap;
     }
 
     .logo {
-            color: var(--accent-color);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        color: var(--accent-color);
+        font-size: 1.9rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+    }
 
-        .logo img {
-            width: 60px;
-            height: 50px;
-            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
-            /* Removed border-radius: 50% to keep the logo in its original shape */
-        }
-    .home-button {
+    .logo img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 10px;
+    }
+
+    .search-nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .search-bar {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-bar i {
+        position: absolute;
+        left: 15px;
+        color: var(--text-muted);
+        font-size: 1.2rem;
+    }
+
+    .search-bar input[type="text"] {
+        padding: 10px 15px 10px 40px;
+        border: none;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--accent-color);
+        font-size: 1rem;
+        width: 250px;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-bar input[type="text"]:focus {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+        outline: none;
+    }
+
+    .search-bar input[type="text"]::placeholder {
+        color: var(--accent-color);
+        opacity: 0.7;
+    }
+
+    .hamburger {
+        background: none;
+        border: none;
+        color: var(--accent-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: none;
+        transition: transform 0.3s ease;
+    }
+
+    .hamburger:hover {
+        transform: scale(1.1);
+    }
+
+    .search-nav .nav-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .nav-btn {
+        padding: 8px 20px;
+        border: 2px solid var(--secondary-color);
+        border-radius: 20px;
         background: transparent;
         color: var(--accent-color);
-        font-size: 1.1rem;
         font-weight: 600;
-        border: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         cursor: pointer;
+        transition: all 0.3s ease;
         text-decoration: none;
-        padding: 8px 15px;
-        transition: all 0.3s ease;
-        border-radius: 25px;
-        margin-left: 15px;
-    }
-
-    .home-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        transform: scale(1.05);
-    }
-
-    /* Body Styles with Pipe Shape Background */
-    body {
-        min-height: 100vh;
-        padding-top: 100px;
-        background: #f5f5f5;
-        position: relative;
-        overflow-x: hidden;
-    }
-
-    body::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background:
-            radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
-            radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
-            linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
-            linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
-        background-size: 100px 100px, 150px 150px, 200px 200px;
-        opacity: 0.1;
-        z-index: -1;
-    }
-
-    /* Form Container */
-    .form-container {
-        min-height: calc(100vh - 100px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    /* Access Denied Styles */
-    .access-denied {
-        max-width: 500px;
-        width: 100%;
         text-align: center;
     }
-        /* Error Message Styling */
-    .sign-in-form .error-message {
-        color: red;
-        text-align: center;
-        margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
-        font-size: 1rem; /* Adjust font size */
-        width: 100%; /* Ensure the error message spans the width of the form */
-    }
 
-    .access-denied h4 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: var(--primary-color);
-    }
-
-    .access-denied p {
-        font-size: 1.1rem;
-        color: #666;
-        margin-bottom: 20px;
-    }
-
-    .access-denied button {
-        padding: 12px 30px;
+    .nav-btn:hover {
         background: var(--secondary-color);
-        color: var(--accent-color);
-        border: none;
-        border-radius: 25px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .access-denied button:hover {
-        background: #e65c00;
-        transform: scale(1.05);
+        transform: translateY(-2px);
         box-shadow: var(--shadow);
     }
 
+    /* Main Content */
+    .main-content {
+        padding-top: calc(var(--header-height) + 30px);
+        padding-bottom: 40px;
+        padding-left: 40px;
+        padding-right: 40px;
+        background: var(--background-color);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    /* Access Denied Content */
     .error-message {
-        color: red;
-        margin-bottom: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
+        color: var(--error-color);
+        font-size: 1rem;
+    }
+
+    .error-message i {
+        font-size: 1.3rem;
+    }
+
+    .main-content h4 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .main-content p {
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+
+    .main-content .nav-buttons {
+        justify-content: center;
+        display: flex; /* Ensure visibility by default */
+    }
+
+    .main-content .nav-btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+        width: 180px;
+        background: linear-gradient(90deg, var(--secondary-color), #ff8c00);
+        border: none;
+        color: var(--accent-color);
+        display: inline-block; /* Ensure it’s visible and respects flow */
+    }
+
+    .main-content .nav-btn:hover {
+        background: linear-gradient(90deg, #e65c00, #ff6b00);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+    }
+
+    /* Popup Styles */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 2000;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--accent-color);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 2001;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+    }
+
+    .popup p {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+
+    .popup p[th\\:if="${session.error}"] {
+        color: var(--error-color);
+    }
+
+    .popup button {
+        padding: 10px 25px;
+        background: linear-gradient(90deg, var(--secondary-color), #ff8c00);
+        color: var(--accent-color);
+        border: none;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .popup button:hover {
+        background: linear-gradient(90deg, #e65c00, #ff6b00);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
-        .access-denied h4 {
-            font-size: 1.8rem;
-        }
-
-        .access-denied p {
-            font-size: 0.9rem;
-        }
-
-        .access-denied button {
-            font-size: 1rem;
-        }
-    }
-
-    @media (min-width: 769px) {
         header {
-            padding: 20px 40px;
+            padding: 15px 20px;
+            min-height: auto;
         }
 
         .header-container {
-            flex-wrap: nowrap;
+            flex-direction: column;
+            padding: 0;
+            align-items: flex-start;
+        }
+
+        .search-nav {
+            flex-direction: column;
+            width: 100%;
+            margin-top: 10px;
+            align-items: flex-start;
+        }
+
+        .search-bar {
+            width: 100%;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 8px 15px 8px 40px;
+            font-size: 0.9rem;
+        }
+
+        .hamburger {
+            display: block;
+            margin-left: auto;
+        }
+
+        .search-nav .nav-buttons {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .search-nav .nav-buttons.active {
+            display: flex;
+        }
+
+        .search-nav .nav-btn {
+            width: 100%;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            padding: 20px;
+            padding-top: 120px; /* Adjusted to clear header + dropdown */
+            gap: 15px;
+        }
+
+        .main-content h4 {
+            font-size: 1.5rem;
+        }
+
+        .main-content p {
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            font-size: 0.9rem;
+        }
+
+        .error-message i {
+            font-size: 1.2rem;
+        }
+
+        .main-content .nav-buttons {
+            width: 100%; /* Full width for centering */
+            display: flex; /* Explicitly ensure visibility */
+        }
+
+        .main-content .nav-btn {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            width: 150px;
+            display: inline-block; /* Ensure visibility */
+        }
+
+        .popup {
+            width: 85%;
+            padding: 15px;
+        }
+
+        .popup p {
+            font-size: 1rem;
+        }
+
+        .popup button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-content {
+            padding-top: 140px; /* Further adjusted for smaller screens */
+            gap: 12px;
+        }
+
+        .main-content h4 {
+            font-size: 1.3rem;
+        }
+
+        .main-content p {
+            font-size: 0.85rem;
+        }
+
+        .error-message {
+            font-size: 0.85rem;
+        }
+
+        .error-message i {
+            font-size: 1.1rem;
+        }
+
+        .main-content .nav-btn {
+            padding: 6px 15px;
+            width: 120px;
+            font-size: 0.85rem;
         }
     }
   </style>
 </head>
 <body>
+<!-- Header -->
 <header>
   <div class="header-container">
     <div class="logo">
-<!--      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
-      <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
-      Hydrospark
+      <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" />
+      <a th:href="@{ / }" style="text-decoration: none; color: white;">
+        Hydrospark
+      </a>
     </div>
-    <a th:href="@{/}" class="home-button">Home</a>
+    <div class="search-nav">
+      <form class="search-bar" action="/search" method="GET">
+        <i class="fas fa-search"></i>
+        <input type="text" name="query" placeholder="Search...">
+      </form>
+      <button class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-buttons" th:if="${session.employee != null}">
+        <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>
+        <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>
+      </div>
+      <div class="nav-buttons" th:if="${session.employee == null and session.user != null}">
+        <a class="nav-btn" th:href="@{/profile}">Profile</a>
+        <a class="nav-btn" th:href="@{/logout}">Logout</a>
+      </div>
+      <div class="nav-buttons" th:if="${session.employee == null and session.user == null}">
+        <a class="nav-btn" th:href="@{/signin}">Sign In</a>
+        <a class="nav-btn" th:href="@{/signup}">Sign Up</a>
+      </div>
+    </div>
   </div>
 </header>
 
-<div class="form-container">
-  <div class="access-denied">
-    <!-- Error Message with specific error -->
-    <div th:if="${error != null}" class="error-message">
-      <i class="bi bi-exclamation-circle-fill"></i>
-      <span th:text="${error}">Error message goes here.</span>
-    </div>
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Error Message with specific error -->
+  <div th:if="${error != null}" class="error-message">
+    <i class="bi bi-exclamation-circle-fill"></i>
+    <span th:text="${error}">Error message goes here.</span>
+  </div>
 
-    <!-- Default Error Message -->
-    <div th:if="${error == null}" class="error-message">
-      <i class="bi bi-exclamation-circle-fill"></i>
-      Something went wrong. Please try again.
-    </div>
+  <!-- Default Error Message -->
+  <div th:if="${error == null}" class="error-message">
+    <i class="bi bi-exclamation-circle-fill"></i>
+    Something went wrong. Please try again.
+  </div>
 
-    <!-- Access Denied Content -->
-    <div>
-      <h4 class="text-center">Access Denied</h4>
-      <p>You do not have the required permissions to view this page.</p>
-      <div>
-        <a th:href="@{/}">Return to Home</a>
-      </div>
-    </div>
+  <!-- Access Denied Content -->
+  <h4 class="text-center">Access Denied</h4>
+  <p>You do not have the required permissions to view this page.</p>
+  <div class="nav-buttons" th:if="${session.employee != null}">
+    <a class="nav-btn" th:href="@{/admin}">Admin Panel</a>
+  </div>
+  <div class="nav-buttons" th:if="${session.employee == null and session.user != null}">
+    <a class="nav-btn" th:href="@{/}">Home</a>
+  </div>
+  <div class="nav-buttons" th:if="${session.employee == null and session.user == null}">
+    <a class="nav-btn" th:href="@{/}">Home</a>
+  </div>
+
+  <!-- Popup -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <p th:if="${session.error}" th:text="${session.error}"></p>
+    <p th:unless="${session.error}">Redirecting...</p>
+    <button onclick="closePopup()">OK</button>
   </div>
 </div>
 
 <script>
   function toggleMenu() {
-      const navButtons = document.querySelector('.nav-buttons');
+      const navButtons = document.querySelector('.search-nav .nav-buttons');
       navButtons.classList.toggle('active');
+  }
+
+  function showPopup() {
+      const overlay = document.getElementById('overlay');
+      const popup = document.getElementById('popup');
+      overlay.style.display = 'block';
+      popup.style.display = 'block';
+  }
+
+  function closePopup() {
+      const overlay = document.getElementById('overlay');
+      const popup = document.getElementById('popup');
+      overlay.style.display = 'none';
+      popup.style.display = 'none';
   }
 </script>
 </body>

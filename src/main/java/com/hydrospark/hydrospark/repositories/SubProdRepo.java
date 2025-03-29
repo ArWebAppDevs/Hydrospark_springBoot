@@ -15,6 +15,8 @@ public interface SubProdRepo extends JpaRepository<SubProducts,Integer> {
     List<SubProducts> findSubProductByName(String name);
     @Query("select s from SubProducts s")
     List<SubProducts> getAll();
+    @Query("select s from SubProducts s where s.subProdId=?1")
+    List<SubProducts> findSubProductById(int id);
 
 //
     @Query("DELETE from SubProducts s where s.product.proId=?1")

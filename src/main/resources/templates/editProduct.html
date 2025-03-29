@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hydrospark - Product Management</title>
+  <title>Hydrospark - Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -18,479 +18,355 @@
         --primary-color: #1a1a1a;
         --secondary-color: #ff6b00;
         --accent-color: #ffffff;
-        --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        --background-color: #f5f5f5;
+        --highlight-color: #00c4b4;
+        --error-color: #ff4f4f;
+        --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        --card-bg: #ffffff;
+        --text-muted: #666;
+        --header-height: 90px;
     }
 
     /* Header Styles */
     header {
-        background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
-        padding: 15px 20px;
+        background: linear-gradient(135deg, var(--primary-color), #333);
+        padding: 20px 40px;
         position: fixed;
         width: 100%;
         top: 0;
         z-index: 1000;
-        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        height: var(--header-height);
     }
 
     .header-container {
         max-width: 1400px;
         margin: 0 auto;
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        flex-wrap: nowrap;
     }
 
     .logo {
-            color: var(--accent-color);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        color: var(--accent-color);
+        font-size: 1.9rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+    }
 
-        .logo img {
-            width: 60px;
-            height: 50px;
-            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
-            /* Removed border-radius: 50% to keep the logo in its original shape */
-        }
+    .logo img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 10px;
+    }
 
     .home-button {
-        background: transparent;
+        background: var(--secondary-color);
         color: var(--accent-color);
+        padding: 10px 20px;
         font-size: 1.1rem;
         font-weight: 600;
-        border: none;
+        border-radius: 30px;
         cursor: pointer;
-        text-decoration: none;
-        padding: 8px 15px;
-        transition: all 0.3s ease;
-        border-radius: 25px;
-        margin-left: 15px;
+        transition: background 0.3s ease, transform 0.2s;
+        border: none;
     }
 
     .home-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background: #e65c00;
         transform: scale(1.05);
     }
 
-    /* Body Styles */
-    body {
-        min-height: 100vh;
-        padding-top: 100px;
-        background: #f5f5f5;
-        position: relative;
-        overflow-x: hidden;
+    /* Toggle Button for Sidebar */
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--accent-color);
+        font-size: 1.5rem;
+        cursor: pointer;
     }
 
-    body::before {
-        content: '';
-        position: absolute;
+    /* Sidebar Styles */
+    .sidebar {
+        position: fixed;
         top: 0;
-        left: 0;
-        width: 100%;
+        left: -300px;
+        width: 300px;
         height: 100%;
-        background:
-            radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
-            radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
-            linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
-            linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
-        background-size: 100px 100px, 150px 150px, 200px 200px;
-        opacity: 0.1;
-        z-index: -1;
+        background: var(--primary-color);
+        transition: left 0.3s ease;
+        padding: 20px;
+        z-index: 999;
+        overflow-y: auto;
     }
 
+    .sidebar.logged-in {
+        left: 0;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar .logo {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--accent-color);
+        font-size: 1.1rem;
+        padding: 15px 20px;
+        margin: 8px 0;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar a:hover {
+        background: var(--highlight-color);
+        transform: translateX(10px);
+    }
+
+    .sidebar a i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+
+    .sidebar a.active {
+        background: var(--highlight-color);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: 0;
+        padding-top: calc(var(--header-height) + 30px);
+        padding-bottom: 40px;
+        padding-left: 40px;
+        padding-right: 40px;
+        background: var(--background-color);
+        min-height: 100vh;
+        transition: margin-left 0.3s ease;
+    }
+
+    .sidebar.logged-in + .main-content {
+        margin-left: 300px;
+    }
+
+    /* Form Container */
     .form-container {
-        min-height: calc(100vh - 100px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    .product-table {
-        max-width: 500px;
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 600px;
         width: 100%;
-        background: rgba(255, 255, 255, 0.8);
-        padding: 20px;
-        border-radius: 8px;
         box-shadow: var(--shadow);
+        margin: 0 auto;
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    .product-table h2 {
+    .form-container:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-container h2 {
         font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 25px;
+        font-weight: 700;
+        text-align: center;
+        background: linear-gradient(90deg, var(--secondary-color), var(--highlight-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
         margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 1.1rem;
         color: var(--primary-color);
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group textarea,
+    .form-group input[type="file"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: var(--primary-color);
+        background: #fafafa;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="number"]:focus,
+    .form-group textarea:focus,
+    .form-group input[type="file"]:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
+        outline: none;
+        background: #fff;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-group input[type="file"] {
+        padding: 10px 15px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .error-message {
+        color: var(--error-color);
+        font-size: 1rem;
+        padding: 12px;
+        background: rgba(255, 79, 79, 0.1);
+        border-radius: 8px;
+        margin-bottom: 20px;
         text-align: center;
     }
 
-    .product-table table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .product-table tr {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .product-table td:first-child {
-        flex-grow: 1;
-        padding-left: 10px;
-        color: var(--primary-color);
-        font-size: 1rem;
-    }
-
-    .product-table td:last-child {
-        display: flex;
-        gap: 10px;
-        padding-right: 10px;
-    }
-
-    .sign-in-form .error-message {
-        color: red;
-        text-align: center;
-        margin: 10px 0;
-        font-size: 1rem;
-        width: 100%;
-    }
-
-    .product-table form {
-        display: inline-block;
-    }
-
-    .product-table button {
-        padding: 8px 15px;
-        background: var(--secondary-color);
+    .form-container button {
+        padding: 12px 30px;
+        background: linear-gradient(90deg, var(--secondary-color), #ff8c00);
         color: var(--accent-color);
         border: none;
-        border-radius: 15px;
-        font-size: 0.9rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
+        width: 100%;
+        display: block;
     }
 
-    .product-table button:hover {
-        background: #e65c00;
-        transform: scale(1.05);
-        box-shadow: var(--shadow);
+    .form-container button:hover {
+        background: linear-gradient(90deg, #e65c00, #ff6b00);
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
     }
 
+    /* Responsive Design */
     @media (max-width: 768px) {
-        .product-table h2 {
-            font-size: 1.8rem;
+        .menu-toggle {
+            display: block;
         }
 
-        .product-table td:first-child {
-            font-size: 0.9rem;
+        .sidebar {
+            width: 250px;
+            left: -250px;
         }
 
-        .product-table button {
-            font-size: 0.8rem;
-            padding: 6px 12px;
-        }
-    }
-
-    @media (min-width: 769px) {
-        header {
-            padding: 20px 40px;
+        .sidebar.active {
+            left: 0;
         }
 
-        .header-container {
-            flex-wrap: nowrap;
+        .sidebar.logged-in + .main-content {
+            margin-left: 0;
+        }
+
+        .main-content {
+            padding-top: calc(var(--header-height) + 20px);
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
+        }
+
+        .form-container {
+            padding: 20px;
         }
     }
   </style>
 </head>
 <body>
+<!-- Header -->
 <header>
   <div class="header-container">
+    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
     <div class="logo">
-      <img th:src="'data:image/png;base64,' + ${img}" alt="Hydrospark Logo" />
-      Hydrospark
+      <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" />
+      <a th:href="@{ / }" style="text-decoration: none; color: white;">
+        Hydrospark
+      </a>
     </div>
     <a th:href="@{/}" class="home-button">Home</a>
   </div>
 </header>
 
-<div class="form-container">
-  <div class="product-table">
-    <h2>Product Management</h2>
-    <table>
-      <tbody>
-      <!-- Iterate over the list of products -->
-      <tr th:each="productMap : ${products}" th:if="${#strings.isEmpty(productMap['prodName']) == false}">
-        <td th:text="${productMap['prodName']}"></td>
-        <td>
-          <form th:action="@{/edit/product(prodName=${productMap['prodName']})}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />
-            <button type="submit">Edit</button>
-          </form>
-          <form th:action="@{/remove/product(prodName=${productMap['prodName']})}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />
-            <button type="submit">Remove</button>
-          </form>
-        </td>
-      </tr>
+<!-- Sidebar -->
+<div class="sidebar" th:classappend="${session.employee != null ? 'logged-in' : ''}">
+  <div class="logo">
+    <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" width="50" height="50" />
+    <span>Hydrospark</span>
+  </div>
+  <a th:href="@{/admin/addEmployee}"><i class="fas fa-user-plus"></i> Add Employee</a>
+  <a th:href="@{/admin/removeEmployee}"><i class="fas fa-user-minus"></i> Remove Employee</a>
+  <a th:href="@{/admin/addProduct}" class="active"><i class="fas fa-box-open"></i> Add Product</a>
+  <a th:href="@{/admin/products}"><i class="fas fa-th-list"></i> All Products</a>
+  <a th:href="@{/admin/showvisited}"><i class="fas fa-eye"></i> Show Who Visited</a>
+</div>
 
-      <!-- Iterate over sub-products -->
-      <tr th:each="subProductMap : ${products}" th:if="${#strings.isEmpty(subProductMap['subprodName']) == false}">
-        <td th:text="${subProductMap['subprodName']}"></td>
-        <td>
-          <form th:action="@{/edit/subproduct(subprodName=${subProductMap['subprodName']})}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />
-            <button type="submit">Edit</button>
-          </form>
-          <form th:action="@{/remove/subproduct(subprodName=${subProductMap['subprodName']})}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />
-            <button type="submit">Remove</button>
-          </form>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+<!-- Main Content -->
+<div class="main-content">
+  <div class="form-container" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="sign-in-form">
+      <h2>Edit Product</h2>
+      <form method="post" th:action="@{${redirect}}" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="ProductName">Product Name</label>
+          <input type="text" id="ProductName" name="ProductName" />
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="price" />
+        </div>
+        <div class="form-group">
+          <label for="Description">Description</label>
+          <textarea id="Description" name="Description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="ProductImage">Upload Image</label>
+          <input type="file" id="ProductImage" name="ProductImage" accept="image/*" />
+        </div>
+        <div th:if="${error}" class="error-message">
+          <p th:text="${error}"></p>
+        </div>
+        <button type="submit">Edit Product</button>
+      </form>
+    </div>
   </div>
 </div>
 
 <script>
-  function toggleMenu() {
-      const navButtons = document.querySelector('.nav-buttons');
-      navButtons.classList.toggle('active');
-  }
+  document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.toggle('active');
+  });
 </script>
 </body>
 </html>
 
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<head>-->
-<!--  <meta charset="UTF-8">-->
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--  <title>Hydrospark - Add Product</title>-->
-<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
-<!--  <style>-->
-<!--    * {-->
-<!--        margin: 0;-->
-<!--        padding: 0;-->
-<!--        box-sizing: border-box;-->
-<!--        font-family: 'Segoe UI', sans-serif;-->
-<!--    }-->
-
-<!--    :root {-->
-<!--        &#45;&#45;primary-color: #1a1a1a;-->
-<!--        &#45;&#45;secondary-color: #ff6b00;-->
-<!--        &#45;&#45;accent-color: #ffffff;-->
-<!--        &#45;&#45;shadow: 0 5px 15px rgba(0,0,0,0.2);-->
-<!--    }-->
-
-<!--    header {-->
-<!--        background: linear-gradient(135deg, var(&#45;&#45;primary-color), #2d2d2d);-->
-<!--        padding: 15px 20px;-->
-<!--        position: fixed;-->
-<!--        width: 100%;-->
-<!--        top: 0;-->
-<!--        z-index: 1000;-->
-<!--        transition: all 0.3s ease;-->
-<!--    }-->
-
-<!--    .header-container {-->
-<!--        max-width: 1400px;-->
-<!--        margin: 0 auto;-->
-<!--        display: flex;-->
-<!--        justify-content: flex-start;-->
-<!--        align-items: center;-->
-<!--        flex-wrap: nowrap;-->
-<!--    }-->
-
-<!--    .logo {-->
-<!--        color: var(&#45;&#45;accent-color);-->
-<!--        font-size: 1.6rem;-->
-<!--        font-weight: 700;-->
-<!--        text-transform: uppercase;-->
-<!--        letter-spacing: 2px;-->
-<!--        display: flex;-->
-<!--        align-items: center;-->
-<!--        gap: 10px;-->
-<!--    }-->
-
-<!--    .logo img {-->
-<!--        width: 50px;-->
-<!--        height: 60px;-->
-<!--        object-fit: cover;-->
-<!--        border-radius: 50%;-->
-<!--    }-->
-
-<!--    .home-button {-->
-<!--        background: transparent;-->
-<!--        color: var(&#45;&#45;accent-color);-->
-<!--        font-size: 1.1rem;-->
-<!--        font-weight: 600;-->
-<!--        border: none;-->
-<!--        cursor: pointer;-->
-<!--        text-decoration: none;-->
-<!--        padding: 8px 15px;-->
-<!--        transition: all 0.3s ease;-->
-<!--        border-radius: 25px;-->
-<!--        margin-left: 15px;-->
-<!--    }-->
-
-<!--    .home-button:hover {-->
-<!--        background-color: rgba(255, 255, 255, 0.2);-->
-<!--        transform: scale(1.05);-->
-<!--    }-->
-
-<!--    body {-->
-<!--        min-height: 100vh;-->
-<!--        padding-top: 100px;-->
-<!--        background: #f5f5f5;-->
-<!--        position: relative;-->
-<!--        overflow-x: hidden;-->
-<!--    }-->
-
-<!--    body::before {-->
-<!--        content: '';-->
-<!--        position: absolute;-->
-<!--        top: 0;-->
-<!--        left: 0;-->
-<!--        width: 100%;-->
-<!--        height: 100%;-->
-<!--        background:-->
-<!--            radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),-->
-<!--            radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),-->
-<!--            linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),-->
-<!--            linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);-->
-<!--        background-size: 100px 100px, 150px 150px, 200px 200px;-->
-<!--        opacity: 0.1;-->
-<!--        z-index: -1;-->
-<!--    }-->
-
-<!--    .form-container {-->
-<!--        min-height: calc(100vh - 100px);-->
-<!--        display: flex;-->
-<!--        justify-content: center;-->
-<!--        align-items: center;-->
-<!--        padding: 20px;-->
-<!--    }-->
-
-<!--    .sign-in-form {-->
-<!--        max-width: 500px;-->
-<!--        width: 100%;-->
-<!--    }-->
-
-<!--    .sign-in-form h2 {-->
-<!--        font-size: 2rem;-->
-<!--        margin-bottom: 20px;-->
-<!--        color: var(&#45;&#45;primary-color);-->
-<!--        text-align: center;-->
-<!--    }-->
-
-<!--    .sign-in-form .error-message {-->
-<!--        color: red;-->
-<!--        text-align: center;-->
-<!--        margin: 10px 0;-->
-<!--        font-size: 1rem;-->
-<!--        width: 100%;-->
-<!--    }-->
-
-<!--    .sign-in-form .form-group {-->
-<!--        margin-bottom: 20px;-->
-<!--    }-->
-
-<!--    .sign-in-form label {-->
-<!--        font-size: 1rem;-->
-<!--        color: var(&#45;&#45;primary-color);-->
-<!--        margin-bottom: 8px;-->
-<!--        display: block;-->
-<!--    }-->
-
-<!--    .sign-in-form input,-->
-<!--    .sign-in-form textarea {-->
-<!--        width: 100%;-->
-<!--        padding: 12px;-->
-<!--        border-radius: 8px;-->
-<!--        border: 2px solid #ccc;-->
-<!--        font-size: 1rem;-->
-<!--        background: rgba(255, 255, 255, 0.8);-->
-<!--        transition: all 0.3s ease;-->
-<!--    }-->
-
-<!--    .sign-in-form input:focus,-->
-<!--    .sign-in-form textarea:focus {-->
-<!--        border-color: var(&#45;&#45;secondary-color);-->
-<!--        outline: none;-->
-<!--    }-->
-
-<!--    .sign-in-form button {-->
-<!--        padding: 12px 30px;-->
-<!--        background: var(&#45;&#45;secondary-color);-->
-<!--        color: var(&#45;&#45;accent-color);-->
-<!--        border: none;-->
-<!--        border-radius: 25px;-->
-<!--        font-size: 1.2rem;-->
-<!--        font-weight: 600;-->
-<!--        cursor: pointer;-->
-<!--        transition: all 0.3s ease;-->
-<!--        width: 100%;-->
-<!--    }-->
-
-<!--    .sign-in-form button:hover {-->
-<!--        background: #e65c00;-->
-<!--        transform: scale(1.05);-->
-<!--        box-shadow: var(&#45;&#45;shadow);-->
-<!--    }-->
-
-<!--    @media (max-width: 768px) {-->
-<!--        .sign-in-form h2 {-->
-<!--            font-size: 1.8rem;-->
-<!--        }-->
-
-<!--        .sign-in-form input,-->
-<!--        .sign-in-form textarea {-->
-<!--            font-size: 0.9rem;-->
-<!--        }-->
-
-<!--        .sign-in-form button {-->
-<!--            font-size: 1rem;-->
-<!--        }-->
-<!--    }-->
-
-<!--    @media (min-width: 769px) {-->
-<!--        header {-->
-<!--            padding: 20px 40px;-->
-<!--        }-->
-
-<!--        .header-container {-->
-<!--            flex-wrap: nowrap;-->
-<!--        }-->
-<!--    }-->
-<!--  </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<header>-->
-<!--  <div class="header-container">-->
-<!--    <div class="logo">-->
-<!--      <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />-->
-<!--      Hydrospark-->
-<!--    </div>-->
-<!--    <a th:href="@{/}" class="home-button">Home</a>-->
-<!--  </div>-->
-<!--</header>-->
-
-<!--<div class="form-container">-->
+<!--<div class="form-container" xmlns:th="http://www.w3.org/1999/xhtml">-->
 <!--  <div class="sign-in-form">-->
-<!--    <h2>Add Product</h2>-->
+<!--    <h2>Edit Product</h2>-->
+<!--    &lt;!&ndash; Use the model's redirect attribute for form action &ndash;&gt;-->
 <!--    <form method="post" th:action="@{${redirect}}" enctype="multipart/form-data">-->
 <!--      <div class="form-group">-->
 <!--        <label for="ProductName">Product Name</label>-->
@@ -511,10 +387,7 @@
 <!--      <div th:if="${error}" class="error-message">-->
 <!--        <p th:text="${error}"></p>-->
 <!--      </div>-->
-<!--      <button type="submit">Add Product</button>-->
+<!--      <button type="submit">Edit Product</button>-->
 <!--    </form>-->
 <!--  </div>-->
 <!--</div>-->
-
-<!--</body>-->
-<!--</html>-->
